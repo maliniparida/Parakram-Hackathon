@@ -9,54 +9,56 @@
 ===================================================== */
 
 let selectedComplaintId = null;
+let complaintsCache = [];
 
 
 /* =====================================================
-   GET COMPLAINTS FROM LOCAL STORAGE
+   GET COMPLAINTS FROM BACKEND
 ===================================================== */
 
 function getComplaints() {
-
-    const savedData =
-        localStorage.getItem("janNitiComplaints");
-
-
-    if (!savedData) {
-
-        return [];
-
-    }
-
-
-    try {
-
-        return JSON.parse(savedData);
-
-    } catch (error) {
-
-        console.error(
-            "Could not read complaint data:",
-            error
-        );
-
-        return [];
-
-    }
-
+    return complaintsCache;
 }
 
 
 /* =====================================================
-   SAVE COMPLAINTS
+   SAVE COMPLAINTS TO BACKEND
 ===================================================== */
 
-function saveComplaints(complaints) {
+async function updateComplaintStatusAPI(
+    complaintId,
+    newStatus
+) {
 
-    localStorage.setItem(
-        "janNitiComplaints",
-        JSON.stringify(complaints)
+    const response = await fetch(
+        `http://127.0.0.1:8000/api/submissions/${complaintId}/status`,
+        {
+            method: "PATCH",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                status: newStatus
+            })
+        }
     );
 
+    if (!response.ok) {
+        const errorData = await response.json();
+
+        console.error(
+            "Status update error:",
+            errorData
+        );
+
+        throw new Error(
+            "Failed to update complaint status"
+        );
+    }
+
+    return await response.json();
 }
 
 
@@ -465,51 +467,155 @@ function getStatusClass(
 
 
 /* =====================================================
-   LOAD EVERYTHING
+   LOAD EVERYTHING FROM FASTAPI
 ===================================================== */
 
-function loadAllData() {
+async function loadAllData() {
 
-    const complaints =
-        getComplaints();
+    try {
 
+        console.log(
+            "Loading complaints from FastAPI..."
+        );
 
-    updateStatistics(
-        complaints
+        const response = await fetch(
+            "http://127.0.0.1:8000/api/submissions/"
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Failed to load complaints"
+            );
+        }
+
+        const responseData =
+            await response.json();
+
+        console.log(
+            "Backend complaints:",
+            responseData
+        );
+
+        /*
+           Support both:
+           [ complaint, complaint ]
+           and
+           { data: [ complaint, complaint ] }
+        */
+
+        complaintsCache =
+            Array.isArray(responseData)
+                ? responseData
+                : (
+                    responseData.data ||
+                    responseData.results ||
+                    []
+                );
+
+        /*
+           Make sure every complaint has
+           a status for the admin UI.
+        */
+
+        complaintsCache =
+        complaintsCache.map(
+           complaint => ({
+            ...complaint,
+
+            status:
+                complaint.status ||
+                "Submitted",
+
+            severity:
+                complaint.severity ||
+                "Medium",
+
+            location:
+                complaint.village ||
+                complaint.district ||
+                "Not specified"
+        })
     );
 
-
-    renderDashboardTable(
-        complaints
-    );
-
-
-    renderComplaintsTable(
-        complaints
-    );
+        console.log(
+            "Complaints loaded:",
+            complaintsCache
+        );
 
 
-    renderPriorityList(
-        complaints
-    );
+        /* Update dashboard */
+
+        updateStatistics(
+            complaintsCache
+        );
+
+        renderDashboardTable(
+            complaintsCache
+        );
+
+        renderComplaintsTable(
+            complaintsCache
+        );
+
+        renderPriorityList(
+            complaintsCache
+        );
+
+        renderCategoryList(
+            complaintsCache
+        );
+
+        renderAnalysis(
+            complaintsCache
+        );
+
+        renderPriorityTable(
+            complaintsCache
+        );
 
 
-    renderCategoryList(
-        complaints
-    );
+    } catch (error) {
 
+        console.error(
+            "Backend loading error:",
+            error
+        );
 
-    renderAnalysis(
-        complaints
-    );
+        complaintsCache = [];
 
+        updateStatistics(
+            complaintsCache
+        );
 
-    renderPriorityTable(
-        complaints
-    );
+        renderDashboardTable(
+            complaintsCache
+        );
 
+        renderComplaintsTable(
+            complaintsCache
+        );
+
+        renderPriorityList(
+            complaintsCache
+        );
+
+        renderCategoryList(
+            complaintsCache
+        );
+
+        renderAnalysis(
+            complaintsCache
+        );
+
+        renderPriorityTable(
+            complaintsCache
+        );
+
+        showToast(
+            "Cannot connect to CivicAI backend."
+        );
+    }
 }
-
 
 /* =====================================================
    STATISTICS
@@ -803,7 +909,7 @@ function createTableRow(
             <td>
 
                 <span class="complaint-id">
-                    ${complaint.id}
+                    CMP-${complaint.id}
                 </span>
 
             </td>
@@ -839,6 +945,7 @@ function createTableRow(
 
                 ${
                     complaint.village ||
+                    complaint.district ||
                     complaint.location ||
                     "Not specified"
                 }
@@ -1696,21 +1803,15 @@ function renderPriorityTable(
    OPEN COMPLAINT MODAL
 ===================================================== */
 
-function openComplaint(
-    complaintId
-) {
+function openComplaint(complaintId) {
 
-    const complaints =
-        getComplaints();
+    const complaints = getComplaints();
 
-
-    const complaint =
-        complaints.find(
-            item =>
-                item.id ===
-                complaintId
-        );
-
+    const complaint = complaints.find(
+        item =>
+            String(item.id) ===
+            String(complaintId)
+    );
 
     if (!complaint) {
 
@@ -1719,13 +1820,14 @@ function openComplaint(
         );
 
         return;
-
     }
 
+    selectedComplaintId = complaintId;
 
-    selectedComplaintId =
-        complaintId;
 
+    /* =================================================
+       BASIC COMPLAINT INFORMATION
+    ================================================= */
 
     document.getElementById(
         "modalTitle"
@@ -1737,7 +1839,7 @@ function openComplaint(
     document.getElementById(
         "modalId"
     ).textContent =
-        `Complaint ID: ${complaint.id}`;
+        `Complaint ID: CMP-${complaint.id}`;
 
 
     document.getElementById(
@@ -1754,63 +1856,193 @@ function openComplaint(
         "Submitted";
 
 
+    /* =================================================
+       PRIORITY
+    ================================================= */
+
     const priority =
         calculatePriority(
             complaint
         );
 
 
+    /* =================================================
+       MODAL DETAILS
+    ================================================= */
+
     document.getElementById(
         "modalDetails"
     ).innerHTML = `
 
+        <!-- CITIZEN INFORMATION -->
+
         <div class="detail-box">
-
-            <span>
-                Citizen Name
-            </span>
-
+            <span>Citizen Name</span>
             <strong>
                 ${complaint.name || "Not provided"}
             </strong>
-
         </div>
 
 
         <div class="detail-box">
-
-            <span>
-                Mobile Number
-            </span>
-
+            <span>Mobile Number</span>
             <strong>
                 ${complaint.phone || "Not provided"}
             </strong>
-
         </div>
 
 
+        <!-- COMPLAINT INFORMATION -->
+
         <div class="detail-box">
-
-            <span>
-                Category
-            </span>
-
+            <span>Category</span>
             <strong>
                 ${complaint.category || "General"}
             </strong>
-
         </div>
 
 
         <div class="detail-box">
+            <span>Severity</span>
+            <strong>
+                ${complaint.severity || "Medium"}
+            </strong>
+        </div>
+
+
+        <div class="detail-box">
+            <span>Village</span>
+            <strong>
+                ${complaint.village || "Not provided"}
+            </strong>
+        </div>
+
+
+        <div class="detail-box">
+            <span>District</span>
+            <strong>
+                ${complaint.district || "Not provided"}
+            </strong>
+        </div>
+
+
+        <div class="detail-box">
+            <span>Ward</span>
+            <strong>
+                ${complaint.ward || "Not provided"}
+            </strong>
+        </div>
+
+
+        <div class="detail-box">
+            <span>Language</span>
+            <strong>
+                ${complaint.language || "Not provided"}
+            </strong>
+        </div>
+
+
+        <!-- GPS -->
+
+        <div class="detail-box">
+            <span>GPS Latitude</span>
+            <strong>
+                ${
+                    complaint.latitude !== null &&
+                    complaint.latitude !== undefined
+                        ? complaint.latitude
+                        : "Not available"
+                }
+            </strong>
+        </div>
+
+
+        <div class="detail-box">
+            <span>GPS Longitude</span>
+            <strong>
+                ${
+                    complaint.longitude !== null &&
+                    complaint.longitude !== undefined
+                        ? complaint.longitude
+                        : "Not available"
+                }
+            </strong>
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="detail-box">
+            <span>Submitted Date</span>
+            <strong>
+                ${
+                    complaint.created_at
+                        ? new Date(
+                            complaint.created_at
+                        ).toLocaleString("en-IN")
+                        : "Not provided"
+                }
+            </strong>
+        </div>
+
+
+        <!-- PRIORITY -->
+
+        <div class="detail-box">
+            <span>Priority Score</span>
+            <strong>
+                ${priority}
+            </strong>
+        </div>
+
+
+        <!-- GOOGLE MAPS -->
+
+        ${
+            complaint.latitude !== null &&
+            complaint.latitude !== undefined &&
+            complaint.longitude !== null &&
+            complaint.longitude !== undefined
+                ? `
+                    <div class="detail-box">
+                        <span>GPS Location</span>
+
+                        <strong>
+
+                            <a
+                                href="https://www.google.com/maps?q=${complaint.latitude},${complaint.longitude}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                📍 Open in Google Maps
+                            </a>
+
+                        </strong>
+
+                    </div>
+                `
+                : ""
+        }
+
+
+        <!-- =========================================
+             AI ANALYSIS
+        ========================================== -->
+
+        <div
+            class="detail-box"
+            style="
+                grid-column: 1 / -1;
+                margin-top: 15px;
+            "
+        >
 
             <span>
-                Severity
+                🤖 AI ANALYSIS
             </span>
 
             <strong>
-                ${complaint.severity || "Low"}
+                CivicAI Intelligence
             </strong>
 
         </div>
@@ -1819,14 +2051,13 @@ function openComplaint(
         <div class="detail-box">
 
             <span>
-                Location
+                AI Category
             </span>
 
             <strong>
                 ${
-                    complaint.village ||
-                    complaint.location ||
-                    "Not provided"
+                    complaint.ai_category ||
+                    "Not analyzed"
                 }
             </strong>
 
@@ -1836,37 +2067,56 @@ function openComplaint(
         <div class="detail-box">
 
             <span>
-                District
+                Recommended Department
             </span>
 
             <strong>
-                ${complaint.district || "Not provided"}
+                ${
+                    complaint.ai_department ||
+                    "Not determined"
+                }
             </strong>
 
         </div>
 
 
-        <div class="detail-box">
+        <div
+            class="detail-box"
+            style="
+                grid-column: 1 / -1;
+            "
+        >
 
             <span>
-                Submitted Date
+                AI Summary
             </span>
 
             <strong>
-                ${complaint.date || "Not provided"}
+                ${
+                    complaint.ai_summary ||
+                    "AI summary not available."
+                }
             </strong>
 
         </div>
 
 
-        <div class="detail-box">
+        <div
+            class="detail-box"
+            style="
+                grid-column: 1 / -1;
+            "
+        >
 
             <span>
-                Priority Score
+                AI Keywords
             </span>
 
             <strong>
-                ${priority}
+                ${
+                    complaint.ai_keywords ||
+                    "No keywords available."
+                }
             </strong>
 
         </div>
@@ -1874,17 +2124,14 @@ function openComplaint(
     `;
 
 
+    /* =================================================
+       SHOW MODAL
+    ================================================= */
+
     document
-        .getElementById(
-            "modalOverlay"
-        )
-        .classList.remove(
-            "hidden"
-        );
-
+        .getElementById("modalOverlay")
+        .classList.remove("hidden");
 }
-
-
 /* =====================================================
    CLOSE MODAL
 ===================================================== */
@@ -1942,79 +2189,72 @@ document
 
 
 /* =====================================================
-   UPDATE STATUS
+   UPDATE STATUS - BACKEND API
 ===================================================== */
 
 document
-    .getElementById(
-        "updateStatusButton"
-    )
+    .getElementById("updateStatusButton")
     .addEventListener(
         "click",
-        function() {
+        async function() {
 
-            if (
-                !selectedComplaintId
-            ) {
-
+            if (!selectedComplaintId) {
                 return;
-
             }
-
 
             const newStatus =
-                document.getElementById(
-                    "modalStatus"
-                ).value;
+                document
+                    .getElementById(
+                        "modalStatus"
+                    )
+                    .value;
 
+            try {
 
-            const complaints =
-                getComplaints();
-
-
-            const index =
-                complaints.findIndex(
-                    complaint =>
-                        complaint.id ===
-                        selectedComplaintId
+                console.log(
+                    "Updating complaint:",
+                    selectedComplaintId,
+                    "→",
+                    newStatus
                 );
 
 
-            if (
-                index === -1
-            ) {
+                await updateComplaintStatusAPI(
+                    selectedComplaintId,
+                    newStatus
+                );
+
+
+                /*
+                   Reload fresh data from
+                   SQLite through FastAPI.
+                */
+
+                await loadAllData();
+
+
+                closeModal();
+
 
                 showToast(
-                    "Complaint not found."
+                    "Complaint status updated successfully."
                 );
 
-                return;
 
+            } catch (error) {
+
+                console.error(
+                    "Status update failed:",
+                    error
+                );
+
+                showToast(
+                    "Failed to update complaint status."
+                );
             }
-
-
-            complaints[index].status =
-                newStatus;
-
-
-            saveComplaints(
-                complaints
-            );
-
-
-            closeModal();
-
-
-            loadAllData();
-
-
-            showToast(
-                "Complaint status updated."
-            );
 
         }
     );
-
 
 /* =====================================================
    SEARCH
