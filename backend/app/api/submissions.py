@@ -10,6 +10,8 @@ from app.schemas.submission import (
     SubmissionStatusUpdate
 )
 from app.services.ai_service import analyze_complaint
+from app.ml.ml_service import predict_complaint
+from app.services.priority_service import calculate_priority_scores
 
 router = APIRouter(
     prefix="/api/submissions",
@@ -34,6 +36,19 @@ def create_submission(
     submission: SubmissionCreate,
     db: Session = Depends(get_db)
 ):
+    print("🔥 CREATE_SUBMISSION CALLED")
+    # =========================
+    # ML ANALYSIS
+    # =========================
+
+    ml_result = predict_complaint(
+    submission.title,
+    submission.description
+)
+
+    ml_category = ml_result.get("category")
+    ml_confidence = ml_result.get("confidence")
+
     # =========================
     # AI ANALYSIS
     # =========================
@@ -78,6 +93,10 @@ def create_submission(
         ai_department=ai_data.get("department"),
         ai_keywords=keywords,
 
+        # ML ANALYSIS
+        ml_category=ml_category,
+        ml_confidence=ml_confidence,
+
         # CITIZEN DETAILS
         name=submission.name,
         phone=submission.phone,
@@ -106,6 +125,10 @@ def create_submission(
             "title": new_submission.title,
             "description": new_submission.description,
             "category": new_submission.category,
+
+            # ML ANALYSIS
+            "ml_category": new_submission.ml_category,
+            "ml_confidence": new_submission.ml_confidence,
 
             # AI ANALYSIS
             "ai_category": new_submission.ai_category,
@@ -141,6 +164,11 @@ def get_submissions(db: Session = Depends(get_db)):
                 "title": submission.title,
                 "description": submission.description,
                 "category": submission.category,
+
+                # ML ANALYSIS
+                "ml_category": submission.ml_category,
+                "ml_confidence": submission.ml_confidence,
+
                 # AI ANALYSIS
                 "ai_category": submission.ai_category,
                 "ai_summary": submission.ai_summary,
@@ -159,6 +187,20 @@ def get_submissions(db: Session = Depends(get_db)):
             }
             for submission in submissions
         ]
+    }
+# =========================
+# GET PRIORITY RANKINGS
+# =========================
+
+@router.get("/priorities")
+def get_priority_rankings(
+    db: Session = Depends(get_db)
+):
+    priorities = calculate_priority_scores(db)
+
+    return {
+        "total_categories": len(priorities),
+        "data": priorities
     }
 
 # =========================
@@ -197,6 +239,11 @@ def get_submission(
             "title": submission.title,
             "description": submission.description,
             "category": submission.category,
+
+            # ML ANALYSIS
+            "ml_category": submission.ml_category,
+            "ml_confidence": submission.ml_confidence,
+            
             "ai_category": submission.ai_category,
             "ai_summary": submission.ai_summary,
             "ai_department": submission.ai_department,

@@ -19,6 +19,10 @@ class Submission(Base):
     ai_department = Column(String(150), nullable=True)
     ai_keywords = Column(String(500), nullable=True)
 
+    # ML ANALYSIS
+    ml_category = Column(String(100), nullable=True)
+    ml_confidence = Column(Float, nullable=True)
+
     name = Column(String, nullable=False)
     phone = Column(String, nullable=False)
 
