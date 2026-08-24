@@ -10,6 +10,7 @@
 
 let selectedComplaintId = null;
 let complaintsCache = [];
+let priorityCache = [];
 
 
 /* =====================================================
@@ -297,71 +298,38 @@ setCurrentDate();
    PRIORITY SCORE
 ===================================================== */
 
-function calculatePriority(
-    complaint
-) {
+function calculatePriority(complaint) {
 
-    let score = 40;
+    const category =
+        complaint.ai_category ||
+        complaint.ml_category ||
+        complaint.category ||
+        "Other";
 
+    const normalizedCategory =
+        category.trim().toLowerCase();
 
-    /* Severity */
+    const priorityData =
+        priorityCache.find(item => {
 
-    if (
-        complaint.severity ===
-        "High"
-    ) {
+            return (
+                item.category &&
+                item.category.trim().toLowerCase() ===
+                normalizedCategory
+            );
 
-        score += 40;
+        });
 
-    }
+    if (priorityData) {
 
-    else if (
-        complaint.severity ===
-        "Medium"
-    ) {
-
-        score += 20;
-
-    }
-
-    else {
-
-        score += 5;
+        return Number(
+            priorityData.final_priority_score || 0
+        );
 
     }
 
-
-    /* Status */
-
-    if (
-        complaint.status ===
-        "Submitted"
-    ) {
-
-        score += 10;
-
-    }
-
-
-    if (
-        complaint.status ===
-        "Under Review"
-    ) {
-
-        score += 5;
-
-    }
-
-
-    /* Maximum 99 */
-
-    return Math.min(
-        score,
-        99
-    );
-
+    return 0;
 }
-
 
 /* =====================================================
    PRIORITY CLASS
@@ -465,6 +433,55 @@ function getStatusClass(
 
 }
 
+/* =====================================================
+   LOAD AI PRIORITY SCORES FROM FASTAPI
+===================================================== */
+
+async function loadPriorityScores() {
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/api/submissions/priorities"
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load priority scores"
+            );
+
+        }
+
+        const responseData =
+            await response.json();
+
+        priorityCache =
+            Array.isArray(responseData)
+                ? responseData
+                : (
+                    responseData.data ||
+                    responseData.results ||
+                    []
+                );
+
+        console.log(
+            "AI Priority Scores:",
+            priorityCache
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Priority API error:",
+            error
+        );
+
+        priorityCache = [];
+
+    }
+
+}
 
 /* =====================================================
    LOAD EVERYTHING FROM FASTAPI
@@ -541,7 +558,7 @@ async function loadAllData() {
             "Complaints loaded:",
             complaintsCache
         );
-
+        await loadPriorityScores();
 
         /* Update dashboard */
 
@@ -1028,22 +1045,17 @@ function createTableRow(
 
 
 /* =====================================================
-   PRIORITY LIST
+   AI PRIORITY LIST
 ===================================================== */
 
-function renderPriorityList(
-    complaints
-) {
+function renderPriorityList(complaints) {
 
     const container =
         document.getElementById(
             "dashboardPriorityList"
         );
 
-
-    if (
-        complaints.length === 0
-    ) {
+    if (!priorityCache.length) {
 
         container.innerHTML = `
 
@@ -1054,7 +1066,7 @@ function renderPriorityList(
                     padding:15px 0;
                 "
             >
-                Priority issues will appear
+                AI priority analysis will appear
                 after complaints are submitted.
             </p>
 
@@ -1064,77 +1076,71 @@ function renderPriorityList(
 
     }
 
-
     const sorted =
-        [...complaints]
+        [...priorityCache]
             .sort(
                 (a, b) =>
-                    calculatePriority(b) -
-                    calculatePriority(a)
+                    Number(b.final_priority_score || 0) -
+                    Number(a.final_priority_score || 0)
             )
             .slice(0, 5);
 
 
     container.innerHTML =
-        sorted.map(
-            (complaint, index) => {
+        sorted.map((item, index) => {
 
-                const score =
-                    calculatePriority(
-                        complaint
-                    );
+            const score =
+                Number(
+                    item.final_priority_score || 0
+                );
 
+            return `
 
-                return `
+                <div class="priority-item">
 
-                    <div class="priority-item">
+                    <div class="rank-circle">
 
-                        <div class="rank-circle">
-
-                            ${String(
-                                index + 1
-                            ).padStart(2, "0")}
-
-                        </div>
-
-
-                        <div class="priority-info">
-
-                            <strong>
-                                ${complaint.category}
-                            </strong>
-
-                            <small>
-                                ${complaint.id}
-                                •
-                                ${complaint.severity}
-                            </small>
-
-                        </div>
-
-
-                        <div class="priority-score">
-
-                            <strong>
-                                ${score}
-                            </strong>
-
-                            <small>
-                                Priority
-                            </small>
-
-                        </div>
+                        ${String(
+                            index + 1
+                        ).padStart(2, "0")}
 
                     </div>
 
-                `;
 
-            }
-        ).join("");
+                    <div class="priority-info">
+
+                        <strong>
+                            ${item.category}
+                        </strong>
+
+                        <small>
+                            ${item.total_complaints}
+                            complaint(s)
+                        </small>
+
+                    </div>
+
+
+                    <div class="priority-score">
+
+                        <strong>
+                            ${score.toFixed(2)}
+                        </strong>
+
+                        <small>
+                            Priority
+                        </small>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        })
+        .join("");
 
 }
-
-
 /* =====================================================
    CATEGORY LIST
 ===================================================== */
@@ -1626,22 +1632,17 @@ function renderSummary(
 
 
 /* =====================================================
-   PRIORITY TABLE
+   AI PRIORITY TABLE
 ===================================================== */
 
-function renderPriorityTable(
-    complaints
-) {
+function renderPriorityTable(complaints) {
 
     const table =
         document.getElementById(
             "priorityTable"
         );
 
-
-    if (
-        complaints.length === 0
-    ) {
+    if (!priorityCache.length) {
 
         table.innerHTML = `
 
@@ -1656,7 +1657,7 @@ function renderPriorityTable(
                     "
                 >
 
-                    No priority issues available.
+                    No AI priority analysis available.
 
                 </td>
 
@@ -1670,134 +1671,323 @@ function renderPriorityTable(
 
 
     const sorted =
-        [...complaints]
+        [...priorityCache]
             .sort(
                 (a, b) =>
-                    calculatePriority(b) -
-                    calculatePriority(a)
+                    Number(b.final_priority_score || 0) -
+                    Number(a.final_priority_score || 0)
             );
 
 
     table.innerHTML =
-        sorted.map(
-            (complaint, index) => {
+        sorted.map((item, index) => {
 
-                const score =
-                    calculatePriority(
-                        complaint
-                    );
+            const score =
+                Number(
+                    item.final_priority_score || 0
+                );
 
-
-                return `
-
-                    <tr>
-
-                        <td>
-
-                            <strong>
-                                #${index + 1}
-                            </strong>
-
-                        </td>
+            const breakdown =
+                item.priority_breakdown || {};
 
 
-                        <td>
+            return `
 
-                            <span
-                                class="complaint-id"
-                            >
-                                ${complaint.id}
-                            </span>
+                <tr>
 
-                        </td>
+                    <td>
 
+                        <strong>
+                            #${index + 1}
+                        </strong>
 
-                        <td>
-                            ${complaint.category}
-                        </td>
+                    </td>
 
 
-                        <td>
+                    <td>
+
+                        <strong>
+                            ${item.category}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        ${item.total_complaints}
+
+                    </td>
+
+
+                    <td>
+
+                        ${breakdown.citizen_demand ?? 0}/30
+
+                    </td>
+
+
+                    <td>
+
+                        ${breakdown.severity ?? 0}/25
+
+                    </td>
+
+
+                    <td>
+
+                        ${breakdown.hotspot_concentration ?? 0}/20
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="${getPriorityClass(score)}"
+                        >
+
+                            ${score.toFixed(2)}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="${getPriorityClass(score)}"
+                        >
+
                             ${
-                                complaint.village ||
-                                complaint.location ||
-                                "Not specified"
+                                score >= 70
+                                    ? "HIGH"
+                                    : score >= 40
+                                        ? "MEDIUM"
+                                        : "LOW"
                             }
-                        </td>
 
+                        </span>
 
-                        <td>
+                    </td>
 
-                            <span
-                                class="${getSeverityClass(
-                                    complaint.severity
-                                )}"
-                            >
+                </tr>
 
-                                ${complaint.severity}
+            `;
 
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="status-badge ${getStatusClass(
-                                    complaint.status
-                                )}"
-                            >
-
-                                ${complaint.status}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="${getPriorityClass(
-                                    score
-                                )}"
-                            >
-
-                                ${score}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <button
-                                class="view-button"
-                                onclick="
-                                    openComplaint(
-                                        '${complaint.id}'
-                                    )
-                                "
-                            >
-
-                                View
-
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                `;
-
-            }
-        )
+        })
         .join("");
 
 }
+/* =====================================================
+   GET CATEGORY PRIORITY DETAILS
+===================================================== */
 
+function getComplaintPriorityData(complaint) {
+
+    const category =
+        complaint.ai_category ||
+        complaint.ml_category ||
+        complaint.category ||
+        "Other";
+
+    return priorityCache.find(item =>
+        item.category &&
+        item.category.trim().toLowerCase() ===
+        category.trim().toLowerCase()
+    );
+
+}
+
+/* =====================================================
+   MAP-BASED IMPACT ANALYSIS
+===================================================== */
+
+function calculateImpactAnalysis(complaint) {
+
+    const category =
+        (
+            complaint.ai_category ||
+            complaint.ml_category ||
+            complaint.category ||
+            "Other"
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const priority =
+        Number(calculatePriority(complaint) || 0);
+
+
+    const severity =
+        complaint.severity || "Medium";
+
+
+    /*
+       Base impact radius in KM
+       depending on the type of civic problem.
+    */
+
+    const categoryImpact = {
+
+        road: {
+            radius: 2,
+            baseAffected: 1200,
+            benefitRate: 0.90
+        },
+
+        water: {
+            radius: 3,
+            baseAffected: 1800,
+            benefitRate: 0.95
+        },
+
+        education: {
+            radius: 2.5,
+            baseAffected: 1500,
+            benefitRate: 0.85
+        },
+
+        health: {
+            radius: 4,
+            baseAffected: 2200,
+            benefitRate: 0.92
+        },
+
+        electricity: {
+            radius: 2,
+            baseAffected: 1400,
+            benefitRate: 0.90
+        },
+
+        sanitation: {
+            radius: 1.5,
+            baseAffected: 1000,
+            benefitRate: 0.88
+        },
+
+        other: {
+            radius: 1,
+            baseAffected: 700,
+            benefitRate: 0.80
+        }
+    };
+
+
+    const impact =
+        categoryImpact[category] ||
+        categoryImpact.other;
+
+
+    /*
+       Severity multiplier
+    */
+
+    const severityMultiplier = {
+
+        High: 1.5,
+
+        Medium: 1.0,
+
+        Low: 0.6
+    };
+
+
+    const multiplier =
+        severityMultiplier[severity] || 1.0;
+
+
+    /*
+       Priority increases estimated impact.
+    */
+
+    const priorityMultiplier =
+        1 + (priority / 200);
+
+
+    /*
+       Final estimated people affected.
+    */
+
+    const affected =
+        Math.round(
+            impact.baseAffected *
+            multiplier *
+            priorityMultiplier
+        );
+
+
+    /*
+       Estimated beneficiaries.
+    */
+
+    const beneficiaries =
+        Math.round(
+            affected *
+            impact.benefitRate
+        );
+
+
+    /*
+       Social impact score: 0–100
+    */
+
+    const socialImpactScore =
+        Math.min(
+            100,
+
+            Math.round(
+                (
+                    priority * 0.6
+                ) +
+
+                (
+                    severity === "High"
+                        ? 30
+                        : severity === "Medium"
+                            ? 20
+                            : 10
+                )
+            )
+        );
+
+
+    let impactLevel = "Low";
+
+
+    if (socialImpactScore >= 70) {
+
+        impactLevel = "High";
+
+    } else if (socialImpactScore >= 40) {
+
+        impactLevel = "Medium";
+
+    }
+
+
+    return {
+
+        impactRadius:
+            impact.radius,
+
+        estimatedAffected:
+            affected,
+
+        estimatedBeneficiaries:
+            beneficiaries,
+
+        socialImpactScore:
+            socialImpactScore,
+
+        impactLevel:
+            impactLevel
+
+    };
+
+}
 
 /* =====================================================
    OPEN COMPLAINT MODAL
@@ -1864,6 +2054,16 @@ function openComplaint(complaintId) {
         calculatePriority(
             complaint
         );
+
+    const priorityData =
+    getComplaintPriorityData(
+        complaint
+    );
+
+    const impactData =
+    calculateImpactAnalysis(
+        complaint
+    );
 
 
     /* =================================================
@@ -1993,6 +2193,177 @@ function openComplaint(complaintId) {
             <strong>
                 ${priority}
             </strong>
+        </div>
+        ${
+    priorityData
+        ? `
+
+            <div
+                class="detail-box"
+                style="
+                    grid-column: 1 / -1;
+                    margin-top: 10px;
+                "
+            >
+
+                <span>
+                    🤖 AI PRIORITY BREAKDOWN
+                </span>
+
+                <strong>
+                    ${priorityData.explanation}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Citizen Demand
+                </span>
+
+                <strong>
+                    ${priorityData.priority_breakdown.citizen_demand}
+                    / 30
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Severity
+                </span>
+
+                <strong>
+                    ${priorityData.priority_breakdown.severity}
+                    / 25
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Hotspot Concentration
+                </span>
+
+                <strong>
+                    ${priorityData.priority_breakdown.hotspot_concentration}
+                    / 20
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    ML Confidence
+                </span>
+
+                <strong>
+                    ${priorityData.priority_breakdown.ml_confidence}
+                    / 10
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Active Demand
+                </span>
+
+                <strong>
+                    ${priorityData.priority_breakdown.active_demand}
+                    / 15
+                </strong>
+
+            </div>
+
+        `
+        : ""
+    }
+            <!-- =========================================
+             MAP-BASED IMPACT ANALYSIS
+        ========================================== -->
+
+        <div
+            class="detail-box"
+            style="
+                grid-column: 1 / -1;
+                margin-top: 15px;
+            "
+        >
+
+            <span>
+                📊 MAP-BASED IMPACT ANALYSIS
+            </span>
+
+            <strong>
+                CivicAI Impact Estimation
+            </strong>
+
+        </div>
+
+
+        <div class="detail-box">
+
+            <span>
+                👥 Estimated People Affected
+            </span>
+
+            <strong>
+                ${impactData.estimatedAffected.toLocaleString("en-IN")}
+                People
+            </strong>
+
+        </div>
+
+
+        <div class="detail-box">
+
+            <span>
+                ✅ Estimated Beneficiaries
+            </span>
+
+            <strong>
+                ${impactData.estimatedBeneficiaries.toLocaleString("en-IN")}
+                People
+            </strong>
+
+        </div>
+
+
+        <div class="detail-box">
+
+            <span>
+                ⭕ Impact Radius
+            </span>
+
+            <strong>
+                ${impactData.impactRadius} KM
+            </strong>
+
+        </div>
+
+
+        <div class="detail-box">
+
+            <span>
+                📈 Social Impact Score
+            </span>
+
+            <strong>
+                ${impactData.socialImpactScore}/100
+                (${impactData.impactLevel})
+            </strong>
+
         </div>
 
 
