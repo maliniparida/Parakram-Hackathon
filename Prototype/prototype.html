@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Jan Niti - Citizen powered community governance platform">
+
+    <title>Jan Niti | Citizen Powered Governance</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Prototype CSS -->
+    <link rel="stylesheet" href="prototype.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     LOADING SCREEN
+========================================================= -->
+
+<div id="loadingScreen" class="loading-screen">
+
+    <div class="loader-content">
+
+        <div class="loader-logo">
+            <i class="fa-solid fa-building-columns"></i>
+        </div>
+
+        <h2>JAN NITI</h2>
+
+        <p>Citizen Powered Governance</p>
+
+        <div class="loader-line">
+            <span></span>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+
+<header class="navbar" id="navbar">
+
+    <div class="nav-container">
+
+
+        <!-- LOGO -->
+
+        <a href="#home" class="brand">
+
+            <div class="brand-symbol">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+            </div>
+
+            <div class="brand-text">
+
+                <strong>JAN NITI</strong>
+
+                <span>Citizen Powered Governance</span>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- DESKTOP NAVIGATION -->
+
+        <nav class="nav-links">
+
+            <a href="#home" class="nav-link active">
+                Home
+            </a>
+
+            <a href="#problem" class="nav-link">
+                The Problem
+            </a>
+
+            <a href="#solution" class="nav-link">
+                Our Solution
+            </a>
+
+            <a href="#citizen" class="nav-link">
+                Citizen
+            </a>
+
+            <a href="#government" class="nav-link">
+                Government
+            </a>
+
+        </nav>
+
+
+
+        <!-- NAV ACTION -->
+
+        <button
+            class="nav-demo-btn"
+            onclick="startExperience()">
+
+            <i class="fa-solid fa-play"></i>
+
+            Start Demo
+
+        </button>
+
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+            class="mobile-menu-btn"
+            onclick="toggleMobileMenu()">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- MOBILE NAV -->
+
+    <div class="mobile-nav" id="mobileNav">
+
+        <a href="#home">Home</a>
+
+        <a href="#problem">The Problem</a>
+
+        <a href="#solution">Our Solution</a>
+
+        <a href="#citizen">Citizen</a>
+
+        <a href="#government">Government</a>
+
+        <button onclick="startExperience()">
+            Start Demo
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+
+<section class="hero-section" id="home">
+
+
+    <!-- BACKGROUND ELEMENTS -->
+
+    <div class="hero-grid"></div>
+
+    <div class="hero-glow glow-one"></div>
+
+    <div class="hero-glow glow-two"></div>
+
+
+    <div class="container hero-container">
+
+
+        <!-- HERO CONTENT -->
+
+        <div class="hero-content">
+
+
+            <div class="eyebrow">
+
+                <span class="eyebrow-dot"></span>
+
+                DIGITAL CIVIC INNOVATION
+
+            </div>
+
+
+            <h1>
+
+                Your Voice.
+
+                <span>Your Community.</span>
+
+                Your Future.
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                A citizen-centric platform that transforms
+                everyday community complaints into organized,
+                actionable insights for better governance.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <button
+                    class="primary-btn"
+                    onclick="startExperience()">
+
+                    <span>Experience the Solution</span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+                <button
+                    class="secondary-btn"
+                    onclick="scrollToSection('solution')">
+
+                    <i class="fa-solid fa-circle-play"></i>
+
+                    See How It Works
+
+                </button>
+
+            </div>
+
+
+            <!-- TRUST -->
+
+            <div class="hero-trust">
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>
+                        Citizen First
+                    </span>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>
+                        Data Driven
+                    </span>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    <span>
+                        Action Oriented
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HERO VISUAL -->
+
+        <div class="hero-visual">
+
+
+            <div class="floating-card card-top">
+
+                <div class="mini-icon blue">
+
+                    <i class="fa-solid fa-file-circle-check"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>Complaint Received</strong>
+
+                    <span>CMP-1048</span>
+
+                </div>
+
+                <i class="fa-solid fa-circle-check success-icon"></i>
+
+            </div>
+
+
+
+            <!-- CENTRAL VISUAL -->
+
+            <div class="hero-dashboard">
+
+
+                <div class="dashboard-top">
+
+                    <div>
+
+                        <span class="dashboard-label">
+                            COMMUNITY INSIGHTS
+                        </span>
+
+                        <h3>
+                            Local Issues
+                        </h3>
+
+                    </div>
+
+
+                    <div class="live-indicator">
+
+                        <span></span>
+
+                        LIVE
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ISSUE -->
+
+                <div class="issue-card">
+
+                    <div class="issue-icon road">
+
+                        <i class="fa-solid fa-road"></i>
+
+                    </div>
+
+
+                    <div class="issue-info">
+
+                        <strong>
+                            Road Repair
+                        </strong>
+
+                        <span>
+                            82 complaints
+                        </span>
+
+                    </div>
+
+
+                    <div class="issue-score high">
+
+                        <small>
+                            Priority
+                        </small>
+
+                        <strong>
+                            92
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="issue-card">
+
+                    <div class="issue-icon health">
+
+                        <i class="fa-solid fa-hospital"></i>
+
+                    </div>
+
+
+                    <div class="issue-info">
+
+                        <strong>
+                            Health Centre
+                        </strong>
+
+                        <span>
+                            51 complaints
+                        </span>
+
+                    </div>
+
+
+                    <div class="issue-score high">
+
+                        <small>
+                            Priority
+                        </small>
+
+                        <strong>
+                            87
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="issue-card">
+
+                    <div class="issue-icon water">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+
+                    <div class="issue-info">
+
+                        <strong>
+                            Water Facility
+                        </strong>
+
+                        <span>
+                            31 complaints
+                        </span>
+
+                    </div>
+
+
+                    <div class="issue-score medium">
+
+                        <small>
+                            Priority
+                        </small>
+
+                        <strong>
+                            70
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DASHBOARD FOOTER -->
+
+                <div class="dashboard-footer">
+
+                    <span>
+                        <i class="fa-solid fa-location-dot"></i>
+                        Community Overview
+                    </span>
+
+                    <span>
+                        Updated just now
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="floating-card card-bottom">
+
+                <div class="mini-progress">
+
+                    <div
+                        class="progress-circle"
+                        data-value="78">
+
+                        <span>78%</span>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Resolution Progress
+                    </strong>
+
+                    <span>
+                        Community issues
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SCROLL -->
+
+    <div class="scroll-indicator">
+
+        <span>SCROLL TO EXPLORE</span>
+
+        <i class="fa-solid fa-arrow-down"></i>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PROBLEM SECTION
+========================================================= -->
+
+<section class="problem-section section" id="problem">
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+            <div class="section-tag">
+                01 — THE CHALLENGE
+            </div>
+
+            <h2>
+                Local problems deserve
+                <span>visible solutions.</span>
+            </h2>
+
+            <p>
+                Citizens experience problems in their communities
+                every day. The challenge is turning those individual
+                voices into organized information that can guide
+                effective action.
+            </p>
+
+        </div>
+
+
+
+        <div class="problem-grid">
+
+
+            <div class="problem-card">
+
+                <div class="problem-number">
+                    01
+                </div>
+
+                <div class="problem-icon">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
+                <h3>
+                    Scattered Complaints
+                </h3>
+
+                <p>
+                    Community problems can be reported through
+                    different channels, making them difficult to
+                    organize and monitor.
+                </p>
+
+            </div>
+
+
+
+            <div class="problem-card featured">
+
+                <div class="problem-number">
+                    02
+                </div>
+
+                <div class="problem-icon">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </div>
+
+                <h3>
+                    Limited Visibility
+                </h3>
+
+                <p>
+                    Citizens may not always know whether their
+                    complaint has been received, reviewed or acted upon.
+                </p>
+
+            </div>
+
+
+
+            <div class="problem-card">
+
+                <div class="problem-number">
+                    03
+                </div>
+
+                <div class="problem-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+                <h3>
+                    Difficult Prioritization
+                </h3>
+
+                <p>
+                    Authorities need a clearer picture of which
+                    community issues require urgent attention.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SOLUTION SECTION
+========================================================= -->
+
+<section class="solution-section section" id="solution">
+
+    <div class="container">
+
+
+        <div class="section-heading centered">
+
+            <div class="section-tag">
+                02 — OUR APPROACH
+            </div>
+
+            <h2>
+                From citizen voice
+                <span>to community action.</span>
+            </h2>
+
+            <p>
+                Jan Niti creates a simple bridge between citizens
+                and decision-makers.
+            </p>
+
+        </div>
+
+
+
+        <!-- PROCESS -->
+
+        <div class="process-flow">
+
+
+            <div class="process-line"></div>
+
+
+            <div class="process-step">
+
+                <div class="process-icon">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <span class="step-number">
+                    01
+                </span>
+
+                <h3>
+                    Listen
+                </h3>
+
+                <p>
+                    Citizens report local problems.
+                </p>
+
+            </div>
+
+
+
+            <div class="process-step">
+
+                <div class="process-icon">
+
+                    <i class="fa-solid fa-database"></i>
+
+                </div>
+
+                <span class="step-number">
+                    02
+                </span>
+
+                <h3>
+                    Organize
+                </h3>
+
+                <p>
+                    Complaints become structured information.
+                </p>
+
+            </div>
+
+
+
+            <div class="process-step">
+
+                <div class="process-icon">
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
+                </div>
+
+                <span class="step-number">
+                    03
+                </span>
+
+                <h3>
+                    Understand
+                </h3>
+
+                <p>
+                    Patterns and trends become visible.
+                </p>
+
+            </div>
+
+
+
+            <div class="process-step">
+
+                <div class="process-icon">
+
+                    <i class="fa-solid fa-ranking-star"></i>
+
+                </div>
+
+                <span class="step-number">
+                    04
+                </span>
+
+                <h3>
+                    Prioritize
+                </h3>
+
+                <p>
+                    Important issues receive attention first.
+                </p>
+
+            </div>
+
+
+
+            <div class="process-step">
+
+                <div class="process-icon">
+
+                    <i class="fa-solid fa-handshake-angle"></i>
+
+                </div>
+
+                <span class="step-number">
+                    05
+                </span>
+
+                <h3>
+                    Act
+                </h3>
+
+                <p>
+                    Authorities can respond effectively.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DEMO CTA -->
+
+        <div class="experience-banner">
+
+            <div>
+
+                <span>
+                    READY TO SEE THE JOURNEY?
+                </span>
+
+                <h3>
+                    Experience Jan Niti as a citizen.
+                </h3>
+
+            </div>
+
+
+            <button
+                onclick="startExperience()"
+                class="light-btn">
+
+                Start Interactive Demo
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CITIZEN SECTION
+========================================================= -->
+
+<section class="citizen-section section" id="citizen">
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+            <div class="section-tag">
+                03 — CITIZEN EXPERIENCE
+            </div>
+
+            <h2>
+                Reporting a problem
+                <span>should be simple.</span>
+            </h2>
+
+            <p>
+                A citizen should be able to report an issue,
+                receive an acknowledgement and track progress
+                without unnecessary complexity.
+            </p>
+
+        </div>
+
+
+
+        <div class="citizen-demo-grid">
+
+
+            <!-- PHONE -->
+
+            <div class="phone-wrapper">
+
+                <div class="phone">
+
+                    <div class="phone-notch"></div>
+
+
+                    <div class="phone-screen">
+
+                        <div class="phone-header">
+
+                            <strong>
+                                JAN NITI
+                            </strong>
+
+                            <i class="fa-solid fa-bell"></i>
+
+                        </div>
+
+
+                        <div class="phone-greeting">
+
+                            <span>
+                                Namaste 👋
+                            </span>
+
+                            <h3>
+                                What needs attention?
+                            </h3>
+
+                        </div>
+
+
+                        <div class="phone-action-card">
+
+                            <div class="action-card-icon">
+
+                                <i class="fa-solid fa-bullhorn"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Report an Issue
+                                </strong>
+
+                                <span>
+                                    Tell us what is happening
+                                </span>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+
+                        <div class="phone-action-card">
+
+                            <div class="action-card-icon tracking">
+
+                                <i class="fa-solid fa-location-crosshairs"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Track Complaint
+                                </strong>
+
+                                <span>
+                                    Check your complaint status
+                                </span>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+
+                        <div class="phone-mini-title">
+                            Recent Community Issues
+                        </div>
+
+
+                        <div class="mini-issue">
+
+                            <span class="mini-dot red"></span>
+
+                            Road Repair
+
+                            <small>
+                                High
+                            </small>
+
+                        </div>
+
+
+                        <div class="mini-issue">
+
+                            <span class="mini-dot orange"></span>
+
+                            Water Supply
+
+                            <small>
+                                Medium
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TEXT -->
+
+            <div class="citizen-features">
+
+                <div class="feature-item">
+
+                    <div class="feature-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Submit a Complaint
+                        </h3>
+
+                        <p>
+                            Citizens can provide their location,
+                            category, description, severity and
+                            optional supporting photo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="feature-item">
+
+                    <div class="feature-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Receive a Complaint ID
+                        </h3>
+
+                        <p>
+                            Every submission receives a unique
+                            complaint ID that can be used later
+                            for tracking.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="feature-item">
+
+                    <div class="feature-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Track Progress
+                        </h3>
+
+                        <p>
+                            Citizens can see where their complaint
+                            stands instead of wondering what
+                            happened after submission.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="openComplaintDemo()">
+
+                    Try Complaint Demo
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     GOVERNMENT SECTION
+========================================================= -->
+
+<section class="government-section section" id="government">
+
+    <div class="container">
+
+
+        <div class="section-heading centered">
+
+            <div class="section-tag">
+                04 — GOVERNMENT INSIGHT
+            </div>
+
+            <h2>
+                Turn complaints into
+                <span>actionable priorities.</span>
+            </h2>
+
+            <p>
+                The administrative side provides a structured
+                overview of community issues.
+            </p>
+
+        </div>
+
+
+
+        <!-- DASHBOARD -->
+
+        <div class="prototype-dashboard">
+
+
+            <div class="dashboard-sidebar">
+
+                <div class="side-logo">
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                    <strong>
+                        JAN NITI
+                    </strong>
+
+                </div>
+
+
+                <div class="side-menu">
+
+                    <button class="side-item active">
+
+                        <i class="fa-solid fa-grid-2"></i>
+
+                        Dashboard
+
+                    </button>
+
+
+                    <button class="side-item">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                        Complaints
+
+                    </button>
+
+
+                    <button class="side-item">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                        Analysis
+
+                    </button>
+
+
+                    <button class="side-item">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Priority Issues
+
+                    </button>
+
+                </div>
+
+
+                <div class="side-footer">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    System Operational
+
+                </div>
+
+            </div>
+
+
+
+            <div class="dashboard-main">
+
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <span>
+                            GOVERNMENT PORTAL
+                        </span>
+
+                        <h3>
+                            Community Overview
+                        </h3>
+
+                    </div>
+
+
+                    <div class="dashboard-user">
+
+                        <div class="user-avatar">
+                            A
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Administrator
+                            </strong>
+
+                            <span>
+                                Government Official
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- STATS -->
+
+                <div class="stat-grid">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <span>
+                                Total Complaints
+                            </span>
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+                        </div>
+
+                        <strong
+                            class="counter"
+                            data-target="1248">
+                            0
+                        </strong>
+
+                        <small>
+                            All reported issues
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <span>
+                                Pending
+                            </span>
+
+                            <i class="fa-solid fa-clock"></i>
+
+                        </div>
+
+                        <strong
+                            class="counter"
+                            data-target="326">
+                            0
+                        </strong>
+
+                        <small>
+                            Need attention
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <span>
+                                Resolved
+                            </span>
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        </div>
+
+                        <strong
+                            class="counter"
+                            data-target="714">
+                            0
+                        </strong>
+
+                        <small>
+                            Successfully addressed
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="stat-card priority-stat">
+
+                        <div class="stat-card-top">
+
+                            <span>
+                                High Priority
+                            </span>
+
+                            <i class="fa-solid fa-fire"></i>
+
+                        </div>
+
+                        <strong
+                            class="counter"
+                            data-target="87">
+                            0
+                        </strong>
+
+                        <small>
+                            Urgent issues
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LOWER DASHBOARD -->
+
+                <div class="dashboard-lower">
+
+
+                    <!-- CHART -->
+
+                    <div class="dashboard-panel chart-demo">
+
+                        <div class="panel-title">
+
+                            <div>
+
+                                <strong>
+                                    Complaints by Category
+                                </strong>
+
+                                <span>
+                                    Community issue distribution
+                                </span>
+
+                            </div>
+
+                            <span class="panel-period">
+                                This Month
+                            </span>
+
+                        </div>
+
+
+                        <div class="fake-chart">
+
+                            <div class="chart-bars">
+
+                                <div class="bar-wrapper">
+
+                                    <div
+                                        class="bar"
+                                        style="height:78%">
+                                    </div>
+
+                                    <span>
+                                        Roads
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-wrapper">
+
+                                    <div
+                                        class="bar"
+                                        style="height:58%">
+                                    </div>
+
+                                    <span>
+                                        Health
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-wrapper">
+
+                                    <div
+                                        class="bar"
+                                        style="height:44%">
+                                    </div>
+
+                                    <span>
+                                        Water
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-wrapper">
+
+                                    <div
+                                        class="bar"
+                                        style="height:36%">
+                                    </div>
+
+                                    <span>
+                                        Education
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-wrapper">
+
+                                    <div
+                                        class="bar"
+                                        style="height:25%">
+                                    </div>
+
+                                    <span>
+                                        Electricity
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PRIORITY -->
+
+                    <div class="dashboard-panel">
+
+                        <div class="panel-title">
+
+                            <div>
+
+                                <strong>
+                                    Priority Issues
+                                </strong>
+
+                                <span>
+                                    Requiring attention
+                                </span>
+
+                            </div>
+
+                            <span class="live-tag">
+                                LIVE VIEW
+                            </span>
+
+                        </div>
+
+
+                        <div class="priority-list">
+
+
+                            <div class="priority-row">
+
+                                <div class="priority-info">
+
+                                    <div class="priority-category road">
+                                        <i class="fa-solid fa-road"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Road Repair
+                                        </strong>
+
+                                        <span>
+                                            82 complaints
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-score high">
+                                    92
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="priority-row">
+
+                                <div class="priority-info">
+
+                                    <div class="priority-category health">
+                                        <i class="fa-solid fa-hospital"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Health Centre
+                                        </strong>
+
+                                        <span>
+                                            51 complaints
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-score high">
+                                    87
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="priority-row">
+
+                                <div class="priority-info">
+
+                                    <div class="priority-category school">
+                                        <i class="fa-solid fa-school"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            School Upgrade
+                                        </strong>
+
+                                        <span>
+                                            43 complaints
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-score medium">
+                                    78
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="priority-row">
+
+                                <div class="priority-info">
+
+                                    <div class="priority-category water">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Water Facility
+                                        </strong>
+
+                                        <span>
+                                            31 complaints
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-score moderate">
+                                    70
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     IMPACT SECTION
+========================================================= -->
+
+<section class="impact-section section">
+
+    <div class="container">
+
+
+        <div class="impact-content">
+
+            <div class="section-tag">
+                05 — THE IMPACT
+            </div>
+
+
+            <h2>
+
+                From scattered voices
+
+                <span>
+                    to meaningful action.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                Jan Niti creates a continuous loop between
+                citizens and governance — making community
+                concerns easier to report, understand,
+                prioritize and address.
+
+            </p>
+
+
+            <div class="impact-flow">
+
+
+                <div class="impact-node">
+
+                    <i class="fa-solid fa-microphone"></i>
+
+                    <span>
+                        VOICE
+                    </span>
+
+                </div>
+
+
+                <div class="impact-arrow">
+                    →
+                </div>
+
+
+                <div class="impact-node">
+
+                    <i class="fa-solid fa-database"></i>
+
+                    <span>
+                        DATA
+                    </span>
+
+                </div>
+
+
+                <div class="impact-arrow">
+                    →
+                </div>
+
+
+                <div class="impact-node">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    <span>
+                        INSIGHT
+                    </span>
+
+                </div>
+
+
+                <div class="impact-arrow">
+                    →
+                </div>
+
+
+                <div class="impact-node">
+
+                    <i class="fa-solid fa-ranking-star"></i>
+
+                    <span>
+                        PRIORITY
+                    </span>
+
+                </div>
+
+
+                <div class="impact-arrow">
+                    →
+                </div>
+
+
+                <div class="impact-node final">
+
+                    <i class="fa-solid fa-handshake"></i>
+
+                    <span>
+                        ACTION
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FINAL CTA
+========================================================= -->
+
+<section class="final-section">
+
+    <div class="container final-container">
+
+
+        <div class="final-icon">
+
+            <i class="fa-solid fa-building-columns"></i>
+
+        </div>
+
+
+        <div class="final-tag">
+            JAN NITI
+        </div>
+
+
+        <h2>
+
+            Better voices.
+
+            <span>
+                Better decisions.
+            </span>
+
+            Better communities.
+
+        </h2>
+
+
+        <p>
+            A citizen-centric approach to making local
+            problems visible and actionable.
+        </p>
+
+
+        <button
+            class="primary-btn large"
+            onclick="startExperience()">
+
+            <i class="fa-solid fa-play"></i>
+
+            Start the Interactive Experience
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+</main>
+
+
+
+<!-- =========================================================
+     COMPLAINT DEMO MODAL
+========================================================= -->
+
+<div
+    class="modal-overlay"
+    id="complaintModal">
+
+    <div class="complaint-modal">
+
+
+        <button
+            class="modal-close"
+            onclick="closeComplaintDemo()">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+
+        <div class="modal-step active" id="complaintStep1">
+
+
+            <div class="modal-icon">
+
+                <i class="fa-solid fa-bullhorn"></i>
+
+            </div>
+
+
+            <span class="modal-label">
+                CITIZEN DEMO
+            </span>
+
+
+            <h2>
+                Report a Community Issue
+            </h2>
+
+
+            <p>
+                Let's simulate how a citizen submits
+                a complaint.
+            </p>
+
+
+            <div class="demo-form">
+
+
+                <label>
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="demoLocation"
+                    value="Bhubaneswar"
+                    placeholder="Enter location">
+
+
+                <label>
+                    Category
+                </label>
+
+                <select id="demoCategory">
+
+                    <option>
+                        Roads
+                    </option>
+
+                    <option>
+                        Healthcare
+                    </option>
+
+                    <option>
+                        Education
+                    </option>
+
+                    <option>
+                        Water
+                    </option>
+
+                    <option>
+                        Electricity
+                    </option>
+
+                </select>
+
+
+                <label>
+                    How serious is the problem?
+                </label>
+
+                <div class="severity-options">
+
+                    <button
+                        class="severity-option"
+                        onclick="selectSeverity(this,'Low')">
+
+                        Low
+
+                    </button>
+
+                    <button
+                        class="severity-option selected"
+                        onclick="selectSeverity(this,'Medium')">
+
+                        Medium
+
+                    </button>
+
+                    <button
+                        class="severity-option"
+                        onclick="selectSeverity(this,'High')">
+
+                        High
+
+                    </button>
+
+                </div>
+
+
+                <button
+                    class="modal-submit"
+                    onclick="submitDemoComplaint()">
+
+                    Submit Complaint
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="modal-step" id="complaintStep2">
+
+
+            <div class="success-animation">
+
+                <div class="success-circle">
+
+                    <i class="fa-solid fa-check"></i>
+
+                </div>
+
+            </div>
+
+
+            <span class="modal-label success-label">
+                COMPLAINT RECEIVED
+            </span>
+
+
+            <h2>
+                Your voice has been recorded.
+            </h2>
+
+
+            <p>
+                A unique complaint ID has been generated
+                for tracking.
+            </p>
+
+
+            <div class="generated-id">
+
+                <span>
+                    COMPLAINT ID
+                </span>
+
+                <strong id="generatedComplaintId">
+                    CMP-1048
+                </strong>
+
+            </div>
+
+
+            <div class="modal-status">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Complaint successfully submitted
+
+            </div>
+
+
+            <button
+                class="modal-submit"
+                onclick="showTrackingDemo()">
+
+                Track This Complaint
+
+                <i class="fa-solid fa-location-crosshairs"></i>
+
+            </button>
+
+        </div>
+
+
+
+        <div class="modal-step" id="complaintStep3">
+
+
+            <div class="tracking-header">
+
+                <span class="modal-label">
+                    COMPLAINT TRACKING
+                </span>
+
+                <h2>
+                    CMP-1048
+                </h2>
+
+                <p>
+                    Road Repair • Bhubaneswar
+                </p>
+
+            </div>
+
+
+            <div class="timeline">
+
+
+                <div class="timeline-item completed">
+
+                    <div class="timeline-dot">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Complaint Submitted
+                        </strong>
+
+                        <span>
+                            Your complaint was received.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="timeline-item completed">
+
+                    <div class="timeline-dot">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Complaint Received
+                        </strong>
+
+                        <span>
+                            The complaint has entered the system.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="timeline-item current">
+
+                    <div class="timeline-dot">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Under Review
+                        </strong>
+
+                        <span>
+                            The issue is being reviewed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="timeline-item">
+
+                    <div class="timeline-dot">
+                        4
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Action Planned
+                        </strong>
+
+                        <span>
+                            Awaiting official action.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="timeline-item">
+
+                    <div class="timeline-dot">
+                        5
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Resolved
+                        </strong>
+
+                        <span>
+                            Issue successfully addressed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="modal-submit"
+                onclick="closeComplaintDemo(); scrollToSection('government')">
+
+                See Government Response
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     DEMO GUIDE
+========================================================= -->
+
+<div
+    class="demo-guide"
+    id="demoGuide">
+
+    <div class="guide-icon">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+    </div>
+
+    <div>
+
+        <strong>
+            Interactive Prototype
+        </strong>
+
+        <span>
+            Explore the citizen → government journey.
+        </span>
+
+    </div>
+
+    <button onclick="closeGuide()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+</div>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container footer-container">
+
+
+        <div class="footer-brand">
+
+            <div class="brand-symbol">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    JAN NITI
+                </strong>
+
+                <span>
+                    Citizen Powered Governance
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-text">
+
+            Prototype Demonstration • Hackathon Project
+
+        </div>
+
+
+        <div class="footer-badge">
+
+            <i class="fa-solid fa-code"></i>
+
+            Built for Impact
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script src="prototype.js"></script>
+
+
+</body>
+
+</html>
