@@ -8,6 +8,7 @@ class SubmissionCreate(BaseModel):
     description: str = Field(..., min_length=10, max_length=2000)
 
     category: str
+    severity: Literal["Low", "Medium", "High"]
 
     name: str
     phone: str
@@ -22,6 +23,9 @@ class SubmissionCreate(BaseModel):
     latitude: float
     longitude: float
 
+    photo_filename: Optional[str] = None
+    photo_analysis: Optional[str] = None
+
 
 class SubmissionStatusUpdate(BaseModel):
     status: Literal[
@@ -30,3 +34,9 @@ class SubmissionStatusUpdate(BaseModel):
         "Action Planned",
         "Resolved"
     ]
+
+class SimilarComplaintRequest(BaseModel):
+    title: str = Field(..., min_length=3, max_length=150)
+    description: str = Field(..., min_length=5, max_length=2000)
+    category: Optional[str] = None
+    limit: int = Field(default=3, ge=1, le=5)
