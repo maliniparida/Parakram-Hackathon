@@ -1,5 +1,4 @@
-const API_BASE_URL = window.CIVICAI_API_URL || "http://127.0.0.1:8010";
-
+const API_BASE_URL = window.CIVICAI_API_URL || "https://janniti.antideploy.com";
 /* =====================================================
    ADMIN AUTHENTICATION
 ===================================================== */

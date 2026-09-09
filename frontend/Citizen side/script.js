@@ -3,7 +3,7 @@
    JavaScript
 ========================================= */
 
-const API_BASE_URL = window.CIVICAI_API_URL || "http://127.0.0.1:8010";
+const API_BASE_URL = window.CIVICAI_API_URL || "https://janniti.antideploy.com";
 
 
 /* =========================================
@@ -522,9 +522,7 @@ complaintForm.addEventListener(
                 error
             );
 
-            alert(
-                "Cannot connect to backend. Make sure FastAPI is running on port 8010."
-            );
+            alert("Cannot connect to CivicAI backend. Please try again.");
         }
 
     finally {
