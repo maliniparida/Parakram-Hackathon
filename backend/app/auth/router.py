@@ -14,7 +14,9 @@ router = APIRouter(prefix="/api/auth", tags=["Auth"])
 
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH") or os.getenv("ADMIN_PASSWORD", "")
-JWT_SECRET = os.getenv("JWT_SECRET", secrets.token_hex(32))
+JWT_SECRET = os.getenv("JWT_SECRET")
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET is not configured")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 

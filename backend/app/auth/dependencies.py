@@ -1,16 +1,7 @@
-import os
-import secrets
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
-from dotenv import load_dotenv
-
-load_dotenv(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
-
-JWT_SECRET = os.getenv("JWT_SECRET", secrets.token_hex(32))
-JWT_ALGORITHM = "HS256"
-ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+from app.auth.router import JWT_SECRET, JWT_ALGORITHM, ADMIN_USERNAME
 
 security = HTTPBearer()
 
